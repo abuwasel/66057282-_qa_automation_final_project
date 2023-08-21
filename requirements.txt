@@ -2,3 +2,4 @@ selenium
 sauceclient
 pytest
 requests
+futures
