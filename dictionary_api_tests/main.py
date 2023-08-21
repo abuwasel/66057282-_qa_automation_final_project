@@ -10,7 +10,33 @@ from functions import *
 #-----Word with No Definitions:------:
 #print(f"Definition: {get_data(url,'asdfghjkl')}")
 
+#-----Case Insensitivity:------:
+#print(get_data(url,'Hello'))
+
+#-----Special Characters:------:
+#print(get_data(url,'c++'))
+
+#-----URI Encoding:------:
+#print(get_data(url,'space%20bar'))
+
+#-----Language Parameter:------:
+#print(get_data(url,'book','es'))
+
+#-----Empty Input:------:
+#print(get_data(url,''))
+
+#-----Rate Limiting:------:
+#print(get_data(url,'word'))
+
+#-----Invalid Endpoint:------:
+#print(get_data(url,'/invalid'))
+
+#-----Network Errors:------:
+#print(get_data(url,'word'))
+
+#-----Long Word Input:------:
 #print(f"Definition: {get_data(url,'supercalifragilisticexpialidocious')}")
+
 
 print(get_data(url,'word'))
 
