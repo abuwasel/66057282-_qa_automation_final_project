@@ -12,6 +12,7 @@ from functions import *
 
 #print(f"Definition: {get_data(url,'supercalifragilisticexpialidocious')}")
 
-print(get_data(url,'apple'))
+print(get_data(url,'word'))
+
 
 
