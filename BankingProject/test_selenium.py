@@ -249,6 +249,3 @@ def test_login_customer_check_deposit_input_not_accept_textual_values(url, selec
     time.sleep(1)
 
     assert amount_input_value == ''
-
-
-SSSS
