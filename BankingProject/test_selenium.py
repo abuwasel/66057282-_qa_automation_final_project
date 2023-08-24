@@ -251,8 +251,4 @@ def test_login_customer_check_deposit_input_not_accept_textual_values(url, selec
     assert amount_input_value == ''
 
 
-
-
-
-
-
+SSSS
