@@ -34,7 +34,7 @@ def selectors():
 
 def test_login_deposit_250_and_check_balance(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -47,25 +47,37 @@ def test_login_deposit_250_and_check_balance(url, selectors):
     time.sleep(1)
     handle_element(driver, selectors['Deposit submit'])
     time.sleep(1)
-    actual = get_items_as_number(driver, selectors['Balance'])
-    time.sleep(1)
-    assert actual == 250, 'Depositing 250 and the Balance yes is 250'
+    expected_balance = 5
+    actual_balance = get_items_as_number(driver, selectors['Balance'])
+    try:
+        assert actual_balance == expected_balance, f'Expected Balance: {expected_balance}, but got: {actual_balance}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_manager_and_remove_one_customer(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Bank Manager btn'])
     time.sleep(1)
     handle_element(driver, selectors['Customers btn'])
     time.sleep(1)
     handle_element(driver, selectors['Delete btn'])
     time.sleep(2)
-    assert "E55555" not in driver.page_source
+    expected = 'E55555'
+    actual = driver.page_source
+    try:
+        assert expected not in actual, f'Expected remove customer: {expected}, but actually its not removed.'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 
 def test_login_manager_and_adding_one_customer(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Bank Manager btn'])
     time.sleep(1)
     handle_element(driver, selectors['Add Customer btn'])
@@ -82,11 +94,18 @@ def test_login_manager_and_adding_one_customer(url, selectors):
     time.sleep(2)
     handle_element(driver, selectors['Customers btn'])
     time.sleep(3)
-    assert "POS8568" in driver.page_source
+    expected_post_code = 'POS8568'
+    actual_post_code = driver.page_source
+    try:
+        assert expected_post_code in actual_post_code, f'Expected adding customer: {expected_post_code}, but actually its not adding'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -104,14 +123,20 @@ def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, sele
     handle_element(driver, selectors['Withdrawl amount input'], 250)
     time.sleep(1)
     handle_element(driver, selectors['Withdrawl submit'])
-    time.sleep(1)
-    balance = get_items_as_number(driver, selectors['Balance'])
     time.sleep(2)
-    assert balance == 750, 'Current Balance is 750'
+    expected_balance = 750
+    actual_balance = get_items_as_number(driver, selectors['Balance'])
+    try:
+        assert actual_balance == expected_balance, f'Expected Balance: {expected_balance}, but got: {actual_balance}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
+
 
 def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Bank Manager btn'])
     time.sleep(1)
     handle_element(driver, selectors['Add Customer btn'])
@@ -126,12 +151,18 @@ def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
     time.sleep(1)
     Alert(driver).accept()
     time.sleep(2)
-    actual = driver.current_url
-    assert actual != url
+    expected_url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager/addCust'
+    actual_url = driver.current_url
+    try:
+        assert actual_url == expected_url, f'Expected url: {expected_url}, but got: {actual_url}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -146,12 +177,18 @@ def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors
     time.sleep(1)
     handle_element(driver, selectors['Transactions btn'])
     time.sleep(2)
-    actual = check_items_in_table_list(driver, selectors['Transactions table'], 1500)
-    assert actual
+    expected_transaction = True
+    actual_transaction = check_items_in_table_list(driver, selectors['Transactions table'], 1500)
+    try:
+        assert actual_transaction == expected_transaction, f'Expected transaction 1500: {expected_transaction}, but got: {actual_transaction}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -159,7 +196,6 @@ def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selec
     handle_element(driver, selectors['Login btn'])
     time.sleep(2)
     accountSelect = Select(driver.find_element(By.CSS_SELECTOR, '#accountSelect'))
-
     accounts_list = len(accountSelect.options)
     for item in range(accounts_list):
         accountSelect.select_by_index(item)
@@ -170,29 +206,46 @@ def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selec
         time.sleep(1)
         accountSelect = Select(driver.find_element(By.CSS_SELECTOR, '#accountSelect'))
 
-    assert actual > 0, 'There is no deposit in any account'
+    expected_deposit = 1
+    actual_deposit = actual
+    try:
+        assert actual_deposit > expected_deposit, f'Expected deposit: {expected_deposit}, but got: {actual_deposit}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_manager_and_check_exist_5_customer(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Bank Manager btn'])
     time.sleep(1)
     handle_element(driver, selectors['Customers btn'])
     time.sleep(2)
+    expected = 5
     actual = return_len_rows_table_list(driver, selectors['Customers table'])
-    time.sleep(1)
-    assert actual == 5
+    try:
+        assert actual == expected, f'Expected number of customers: {expected}, but got: {actual}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_sanity_testing(url):
     driver = init_driver(url)
-    actual_url = driver.current_url
-    actual_title = driver.title
     time.sleep(2)
-    assert actual_url == url and actual_title == 'XYZ Bank'
+    expected_title = 'XYZ Bank'
+    actual_title = driver.title
+    try:
+        assert actual_title == expected_title, f'Expected title: {expected_title}, but got: {actual_title}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_name(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Bank Manager btn'])
     time.sleep(1)
     handle_element(driver, selectors['Add Customer btn'])
@@ -211,12 +264,19 @@ def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_n
     except NoAlertPresentException:
         actual = False
 
-    assert actual == False
+    expected = False
+    try:
+        assert actual == expected, f'Expected title: {expected}, but got: {actual}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
+
 
 def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, selectors):
     driver = init_driver(url)
     ammounts = (100,700,350)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -233,14 +293,18 @@ def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, sel
     time.sleep(1)
     handle_element(driver, selectors['Transactions btn'])
     time.sleep(2)
-    actual = check_amount_in_transactions_table_list(driver, selectors['Transactions table'], *ammounts)
-    time.sleep(1)
-
-    assert actual == True
+    expected_deposit = True
+    actual_deposit = check_amount_in_transactions_table_list(driver, selectors['Transactions table'], *ammounts)
+    try:
+        assert actual_deposit == expected_deposit, f'Expected Deposit: {expected_deposit}, but got: {actual_deposit}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
 
 def test_login_customer_check_deposit_input_not_accept_textual_values(url, selectors):
     driver = init_driver(url)
-    time.sleep(1)
+    time.sleep(2)
     handle_element(driver, selectors['Customer Login btn'])
     time.sleep(1)
     handle_element(driver, selectors['Harry Potter'])
@@ -254,5 +318,11 @@ def test_login_customer_check_deposit_input_not_accept_textual_values(url, selec
     amount_input = driver.find_element(By.CSS_SELECTOR, selectors['amount input'])
     amount_input_value = amount_input.get_attribute("value")
     time.sleep(1)
-
-    assert amount_input_value == ''
+    expected_amount_input_value = ''
+    actual_amount_input_value = amount_input_value
+    try:
+        assert actual_amount_input_value == expected_amount_input_value, f'Expected amount input value: {expected_amount_input_value}, but got: {actual_amount_input_value}'
+    except AssertionError as e:
+        # Capture a screenshot and save it if the assertion fails
+        capture_a_screenshot_and_save_it(driver)
+        raise e
