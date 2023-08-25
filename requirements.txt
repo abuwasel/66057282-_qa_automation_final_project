@@ -3,4 +3,3 @@ sauceclient
 pytest
 requests
 futures
-pytest-failed-screenshot
