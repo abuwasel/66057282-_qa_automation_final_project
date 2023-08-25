@@ -50,6 +50,10 @@ def get_items_as_number(driver, selector):
     element = driver.find_element(By.CSS_SELECTOR, selector).text
     return float(element.replace("$", ""))
 
+def print_error_screen_and_save_image(driver):
+    driver.save_screenshot('screenshots/scheckbox.png')
+
+
 def check_balance(total_balance, due_today=0):
     # Check if the balance is plus or minus
     new_total_balance = total_balance - due_today

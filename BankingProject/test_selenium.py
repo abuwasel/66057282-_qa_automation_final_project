@@ -170,7 +170,7 @@ def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selec
         time.sleep(1)
         accountSelect = Select(driver.find_element(By.CSS_SELECTOR, '#accountSelect'))
 
-    assert actual > 0
+    assert actual > 0, 'There is no deposit in any account'
 
 def test_login_manager_and_check_exist_5_customer(url, selectors):
     driver = init_driver(url)
@@ -182,6 +182,13 @@ def test_login_manager_and_check_exist_5_customer(url, selectors):
     actual = return_len_rows_table_list(driver, selectors['Customers table'])
     time.sleep(1)
     assert actual == 5
+
+def test_sanity_testing(url):
+    driver = init_driver(url)
+    actual_url = driver.current_url
+    actual_title = driver.title
+    time.sleep(2)
+    assert actual_url == url and actual_title == 'XYZ Bank'
 
 def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_name(url, selectors):
     driver = init_driver(url)
