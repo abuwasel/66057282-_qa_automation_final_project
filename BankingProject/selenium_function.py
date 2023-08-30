@@ -62,13 +62,3 @@ def capture_a_screenshot_and_save_it(driver):
     now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     driver.get_screenshot_as_file('screenshots/screenshot-%s.png' % now)
     print("Test failed! Screenshot saved at:", 'screenshots/screenshot-%s.png' % now)
-
-
-def check_balance(total_balance, due_today=0):
-    # Check if the balance is plus or minus
-    new_total_balance = total_balance - due_today
-    if new_total_balance >= 0:
-        print(f'Your Current Balance is in plus: {new_total_balance}')
-    else:
-        print(f'Your Current Balance is in minus: {new_total_balance}')
-

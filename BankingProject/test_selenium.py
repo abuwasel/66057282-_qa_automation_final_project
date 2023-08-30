@@ -47,7 +47,7 @@ def test_login_deposit_250_and_check_balance(url, selectors):
     time.sleep(1)
     handle_element(driver, selectors['Deposit submit'])
     time.sleep(1)
-    expected_balance = 5
+    expected_balance = 250
     actual_balance = get_items_as_number(driver, selectors['Balance'])
     try:
         assert actual_balance == expected_balance, f'Expected Balance: {expected_balance}, but got: {actual_balance}'
