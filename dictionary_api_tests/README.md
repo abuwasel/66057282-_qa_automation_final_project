@@ -1,4 +1,4 @@
-# Test cases for UI - Tests
+# Test cases for API - Tests
 
 ```https://api.dictionaryapi.dev/api/v2/entries/en/<word>```
 
