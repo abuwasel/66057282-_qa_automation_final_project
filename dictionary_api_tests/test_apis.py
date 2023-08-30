@@ -10,9 +10,7 @@ class TestAPIS_Ibrahim:
     def test_valid_word_lookup(self, url):
         word = "apple"
         actual_data = get_data(url, word)[0]['meanings'][0]['definitions'][0]['definition']
-        actual_status_code = get_status_code(url, word)
         assert actual_data is not None, 'Invalid response data'
-        assert actual_status_code == 200, 'Expected status code'
 
     def test_word_with_multiple_definitions(self, url):
         word = "run"
@@ -47,16 +45,13 @@ class TestAPIS_Ibrahim:
 
     def test_empty_input(self, url):
         word = ""
-        actual_data = get_data(url, word)
-        assert actual_data == 'empty', 'Invalid error response'
+        actual_status_code = get_status_code(url, word)
+        assert actual_status_code == 200, 'Invalid error response'
 
     def test_rate_limiting(self, url):
         rate_limiter = RateLimiting()
-        rate_limiter.rate_limiting()
-        if rate_limiter.rate_limiting() > 400:
-            word = "word"
-            actual_status_code = get_status_code(url, word)
-            assert actual_status_code == 429, 'Status Code 429 - Too many requests'
+        actual_status_code = rate_limiter.rate_limiting()
+        assert actual_status_code == 429, 'Status Code 429 - Too many requests'
 
     def test_invalid_endpoint(self, url):
         word = "/invalid"

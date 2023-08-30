@@ -1,21 +1,17 @@
 import requests
 import time
 
-
 def get_data(url, word, lang='en'):
     try:
-        if word != '':
-            url = f'{url}/{lang}/{word}'
-            res = requests.get(url)
-            if res.status_code < 400:
-                data = res.json()
-                return data
-            elif res.status_code == 429:
-                res.status_code
-            else:
-                return res.status_code
+        url = f'{url}/{lang}/{word}'
+        res = requests.get(url)
+        if res.status_code < 400:
+            data = res.json()
+            return data
+        elif res.status_code == 429:
+            res.status_code
         else:
-            return 'empty'
+            return res.status_code
     except ConnectionError as e:
         return 'ConnectionError'
 
