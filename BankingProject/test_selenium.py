@@ -1,5 +1,6 @@
 import pytest
 from selenium_function import *
+from selectors_dic import selector
 
 @pytest.fixture
 def url():
@@ -7,46 +8,34 @@ def url():
 
 @pytest.fixture()
 def selectors():
-    return {'Customer Login btn': 'body > div > div > div.ng-scope > div > div.borderM.box.padT20 > div:nth-child(1) > button',
-            'Bank Manager Login btn': 'body > div > div > div.ng-scope > div > div.borderM.box.padT20 > div:nth-child(3) > button',
-            'Harry Potter': '#userSelect > option:nth-child(3)',
-            'Login btn': 'body > div > div > div.ng-scope > div > form > button',
-            'Deposit btn': 'body > div > div > div.ng-scope > div > div:nth-child(5) > button:nth-child(2)',
-            'amount input': 'body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > div > input',
-            'Deposit submit': 'body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > button',
-            'Balance': 'body > div > div > div.ng-scope > div > div:nth-child(3) > strong:nth-child(2)',
-            'Bank Manager btn': 'body > div > div > div.ng-scope > div > div.borderM.box.padT20 > div:nth-child(3) > button',
-            'Customers btn': 'body > div > div > div.ng-scope > div > div.center > button:nth-child(3)',
-            'Delete btn': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > table > tbody > tr:nth-child(3) > td:nth-child(5) > button',
-            'Add Customer btn': 'body > div > div > div.ng-scope > div > div.center > button:nth-child(1)',
-            'First Name input': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(1) > input',
-            'Last Name input': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(2) > input',
-            'Post Code input': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(3) > input',
-            'Add Customer submit': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > button',
-            'Withdrawl btn': 'body > div > div > div.ng-scope > div > div:nth-child(5) > button:nth-child(3)',
-            'Withdrawl amount input': 'body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > div > input',
-            'Withdrawl submit': 'body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > button',
-            'Transactions btn': 'body > div > div > div.ng-scope > div > div:nth-child(5) > button:nth-child(1)',
-            'Transactions table': 'body > div > div > div.ng-scope > div > div:nth-child(2) > table > tbody',
-            'Transactions Back': 'body > div > div > div.ng-scope > div > div.fixedTopBox > button:nth-child(1)',
-            'Customers table': 'body > div > div > div.ng-scope > div > div.ng-scope > div > div > table > tbody'
-            }
+    return selector
 
 def test_login_deposit_250_and_check_balance(url, selectors):
+    """
+    Log in to the system with one of the existing users,
+    make a deposit of 250 and see that the account balance has changed accordingly.
+
+    Expected: 250
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['amount input'], 250)
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit submit'])
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None),
+        ('Deposit btn', None),
+        ('amount input', 250),
+        ('Deposit submit', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     expected_balance = 250
     actual_balance = get_items_as_number(driver, selectors['Balance'])
     try:
@@ -57,14 +46,29 @@ def test_login_deposit_250_and_check_balance(url, selectors):
         raise e
 
 def test_login_manager_and_remove_one_customer(url, selectors):
+    """
+    Log in to the system with administrator privileges,
+    click on the Users button, delete one of the users you like,
+    write a test that verifies that the action was actually performed.
+
+    Expected: remove customer E55555
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Bank Manager btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Customers btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Delete btn'])
-    time.sleep(2)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Bank Manager btn', None),
+        ('Customers btn', None),
+        ('Delete btn', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     expected = 'E55555'
     actual = driver.page_source
     try:
@@ -76,24 +80,37 @@ def test_login_manager_and_remove_one_customer(url, selectors):
 
 
 def test_login_manager_and_adding_one_customer(url, selectors):
+    """
+    Enter the system as an administrator,
+    add a new client,
+    return to the administrator's screen and check that the client you entered is indeed found.
+
+    Expected: adding customer POS8568
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Bank Manager btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['First Name input'], 'Ibrahim')
-    time.sleep(1)
-    handle_element(driver, selectors['Last Name input'], 'Abu Wasel')
-    time.sleep(1)
-    handle_element(driver, selectors['Post Code input'], 'POS8568')
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer submit'])
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Bank Manager btn', None),
+        ('Add Customer btn', None),
+        ('First Name input', 'Ibrahim'),
+        ('Last Name input', 'Abu Wasel'),
+        ('Post Code input', 'POS8568'),
+        ('Add Customer submit', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     Alert(driver).accept()
-    time.sleep(2)
+    time.sleep(1)
     handle_element(driver, selectors['Customers btn'])
-    time.sleep(3)
+    time.sleep(2)
+
     expected_post_code = 'POS8568'
     actual_post_code = driver.page_source
     try:
@@ -104,26 +121,36 @@ def test_login_manager_and_adding_one_customer(url, selectors):
         raise e
 
 def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, selectors):
+    """
+    Enter the bank as a user,
+    make a deposit of 1000,
+    withdrawal of 250,
+    check that the balance of the account is 750.
+
+    Expected: the balance is 750
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['amount input'], 1000)
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit submit'])
-    time.sleep(2)
-    handle_element(driver, selectors['Withdrawl btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Withdrawl amount input'], 250)
-    time.sleep(1)
-    handle_element(driver, selectors['Withdrawl submit'])
-    time.sleep(2)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None),
+        ('Deposit btn', None),
+        ('amount input', 1000),
+        ('Deposit submit', None),
+        ('Withdrawl btn', None),
+        ('Withdrawl amount input', 250),
+        ('Withdrawl submit', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     expected_balance = 750
     actual_balance = get_items_as_number(driver, selectors['Balance'])
     try:
@@ -135,22 +162,34 @@ def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, sele
 
 
 def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
+    """
+    Write a code that enters the system as an administrator,
+    and add a new account,
+    check that you are at the appropriate url.
+
+    Expected: https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager/addCust
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Bank Manager btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['First Name input'], 'Ibrahim')
-    time.sleep(1)
-    handle_element(driver, selectors['Last Name input'], 'Abu Wasel')
-    time.sleep(1)
-    handle_element(driver, selectors['Post Code input'], 'POS8568')
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer submit'])
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Bank Manager btn', None),
+        ('Add Customer btn', None),
+        ('First Name input', 'Ibrahim'),
+        ('Last Name input', 'Abu Wasel'),
+        ('Post Code input', 'POS8568'),
+        ('Add Customer submit', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     Alert(driver).accept()
-    time.sleep(2)
+    time.sleep(1)
     expected_url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager/addCust'
     actual_url = driver.current_url
     try:
@@ -161,22 +200,33 @@ def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
         raise e
 
 def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors):
+    """
+    Enter the system as a user,
+    and make a transfer of 1500.
+    Make sure that the transfer has been made and appears in the transfer report.
+
+    Expected: True
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['amount input'], 1500)
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit submit'])
-    time.sleep(1)
-    handle_element(driver, selectors['Transactions btn'])
-    time.sleep(2)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None),
+        ('Deposit btn', None),
+        ('amount input', 1500),
+        ('Deposit submit', None),
+        ('Transactions btn', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     expected_transaction = True
     actual_transaction = check_items_in_table_list(driver, selectors['Transactions table'], 1500)
     try:
@@ -187,14 +237,27 @@ def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors
         raise e
 
 def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selectors):
+    """
+    Log in with the Harry Potter user and make sure that all 3 of his accounts have only 1 transfer
+
+    Expected: 1
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(2)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     accountSelect = Select(driver.find_element(By.CSS_SELECTOR, '#accountSelect'))
     accounts_list = len(accountSelect.options)
     for item in range(accounts_list):
@@ -216,11 +279,27 @@ def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selec
         raise e
 
 def test_login_manager_and_check_exist_5_customer(url, selectors):
+    """
+    Enter the system as an administrator,
+    and check that you have exactly 5 customers in the system.
+
+    Expected: 5
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Bank Manager btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Customers btn'])
+    # List of selector keys in the order of execution
+    actions = [
+        ('Bank Manager btn', None),
+        ('Customers btn', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     time.sleep(2)
     expected = 5
     actual = return_len_rows_table_list(driver, selectors['Customers table'])
@@ -232,6 +311,11 @@ def test_login_manager_and_check_exist_5_customer(url, selectors):
         raise e
 
 def test_sanity_testing(url):
+    """
+    Do a system sanity test.
+
+    Expected: XYZ Bank
+    """
     driver = init_driver(url)
     time.sleep(2)
     expected_title = 'XYZ Bank'
@@ -244,20 +328,30 @@ def test_sanity_testing(url):
         raise e
 
 def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_name(url, selectors):
+    """
+    Check that the system does not allow adding a new customer without a first name.
+
+    Expected: False
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Bank Manager btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['First Name input'], '')
-    time.sleep(1)
-    handle_element(driver, selectors['Last Name input'], 'Abu Wasel')
-    time.sleep(1)
-    handle_element(driver, selectors['Post Code input'], 'POS8568')
-    time.sleep(1)
-    handle_element(driver, selectors['Add Customer submit'])
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Bank Manager btn', None),
+        ('Add Customer btn', None),
+        ('First Name input', ''),
+        ('Last Name input', 'Abu Wasel'),
+        ('Post Code input', 'POS8568'),
+        ('Add Customer submit', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     try:
         alert = driver.switch_to.alert
         actual = True
@@ -274,17 +368,30 @@ def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_n
 
 
 def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, selectors):
+    """
+    Enter the system as an assistant,
+    make 3 transfers and verify that the amounts are correct in the transfer report.
+
+    Expected: True
+    """
     driver = init_driver(url)
-    ammounts = (100,700,350)
+    ammounts = (100, 700, 350)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit btn'])
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None),
+        ('Deposit btn', None)
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     for i in range(len(ammounts)):
         time.sleep(2)
         handle_element(driver, selectors['amount input'], ammounts[i])
@@ -303,18 +410,30 @@ def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, sel
         raise e
 
 def test_login_customer_check_deposit_input_not_accept_textual_values(url, selectors):
+    """
+    Enter the system as a user.
+    Check that the money deposit field does not accept textual values, only numbers.
+
+    Expected: ''
+    """
     driver = init_driver(url)
     time.sleep(2)
-    handle_element(driver, selectors['Customer Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Harry Potter'])
-    time.sleep(1)
-    handle_element(driver, selectors['Login btn'])
-    time.sleep(1)
-    handle_element(driver, selectors['Deposit btn'])
-    time.sleep(2)
-    handle_element(driver, selectors['amount input'], 'hii')
-    time.sleep(1)
+    # List of selector keys in the order of execution
+    actions = [
+        ('Customer Login btn', None),
+        ('Harry Potter', None),
+        ('Login btn', None),
+        ('Deposit btn', None),
+        ('amount input', 'hii')
+    ]
+
+    for action in actions:
+        if action[1] is not None:
+            handle_element(driver, selectors[action[0]], action[1])
+        else:
+            handle_element(driver, selectors[action[0]])
+        time.sleep(1)
+
     amount_input = driver.find_element(By.CSS_SELECTOR, selectors['amount input'])
     amount_input_value = amount_input.get_attribute("value")
     time.sleep(1)

@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import NoAlertPresentException
 from datetime import datetime
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def init_driver(url):
