@@ -1,4 +1,4 @@
-# Test cases for UI - Tests
+## Test cases for UI - using (Selenium ,Pytest & Allure reoprts)
 
 ```https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login```
 
@@ -26,3 +26,37 @@
 11- כנס למערכת כיוזר תעשה 3 העברות ותוודא שהסכומים נכונים בדוח ההעברות.
 
 12- כנס למערכת כיוזר בדוק שהשדה של הפקדת כסף אינו מקבל ערכים טקסטואלים רק מספרים.
+
+
+## To run all the tests and create report directory
+```pytest --alluredir=allure_report/ test_selenium.py```
+
+## To run one funtcion test and create report directory
+```pytest --alluredir=allure_report/ -k test_login_deposit_250_and_check_balance```
+
+## To run and open allure report
+```allure serve "C:\Users\User\PycharmProjects\pythonProject1\pythonProject\qa automation final project\BankingProject\allure_report"```
+
+
+## How to Install Allure on Windows OS
+https://www.youtube.com/watch?v=xdjN-4UxL1c
+
+## Download allure framework
+https://github.com/allure-framework/allure2
+
+## Test severity
+```
+import allure
+
+@allure.epic("Workspaces")
+@allure.story("WorkSpaces Creation and Editing Functionality")
+@allure.severity(allure.severity_level.NORMAL)
+class TestWorkspaces(BaseTest):
+
+      @allure.title("Create new workspace test")
+      @allure.description("Create new Workspace")
+      def test_severity():
+           pass
+```
+Allure supports next severity levels: ```TRIVIAL```, ```MINOR```, ```NORMAL```, ```CRITICAL``` , ```BLOCKER```. By default, all tests marks with NORMAL severity.
+
