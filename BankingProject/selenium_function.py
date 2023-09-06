@@ -1,4 +1,5 @@
 import time
+import allure
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,7 +10,7 @@ from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import NoAlertPresentException
 from datetime import datetime
 from selenium.webdriver.support.ui import WebDriverWait
-
+from allure_commons.types import AttachmentType
 
 def init_driver(url):
     driver = webdriver.Chrome()
@@ -61,5 +62,5 @@ def get_items_as_number(driver, selector):
 def capture_a_screenshot_and_save_it(driver):
     # Capture a screenshot and save it if the assertion fails
     now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    driver.get_screenshot_as_file('screenshots/screenshot-%s.png' % now)
-    print("Test failed! Screenshot saved at:", 'screenshots/screenshot-%s.png' % now)
+    allure.attach(driver.get_screenshot_as_png(), 'screenshot-%s' % now, attachment_type=AttachmentType.PNG)
+    #print("Test failed! Screenshot saved at:", 'screenshots/screenshot-%s.png' % now)

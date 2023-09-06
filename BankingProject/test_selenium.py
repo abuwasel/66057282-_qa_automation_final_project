@@ -10,6 +10,11 @@ def url():
 def selectors():
     return selector
 
+@allure.title("Check the balance of the account is 250")
+@allure.description("Log in to the system with one of the existing users,make a deposit of 250 and see that the account balance has changed accordingly.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_deposit_250_and_check_balance(url, selectors):
     """
     Log in to the system with one of the existing users,
@@ -45,6 +50,12 @@ def test_login_deposit_250_and_check_balance(url, selectors):
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check if deleting user is actually performed.")
+@allure.description("Log in to the system with administrator privileges, click on the Users button, delete one of the users you like, write a test that verifies that the action was actually performed.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_manager_and_remove_one_customer(url, selectors):
     """
     Log in to the system with administrator privileges,
@@ -79,6 +90,11 @@ def test_login_manager_and_remove_one_customer(url, selectors):
         raise e
 
 
+@allure.title("Check if adding new client is actually performed.")
+@allure.description("Enter the system as an administrator, add a new client,return to the administrator's screen and check that the client you entered is indeed found")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_manager_and_adding_one_customer(url, selectors):
     """
     Enter the system as an administrator,
@@ -120,6 +136,12 @@ def test_login_manager_and_adding_one_customer(url, selectors):
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check the balance of the account is 750")
+@allure.description("Enter the bank as a user, make a deposit of 1000 and a withdrawal of 250, check that the balance of the account is 750")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, selectors):
     """
     Enter the bank as a user,
@@ -161,6 +183,11 @@ def test_login_deposit_1000_and_withdrawl_250_and_check_balance_is_750(url, sele
         raise e
 
 
+@allure.title("Check if that you are at the appropriate url.")
+@allure.description("Write a code that enters the system as an administrator, and add a new account,check that you are at the appropriate url.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
     """
     Write a code that enters the system as an administrator,
@@ -199,6 +226,12 @@ def test_login_manager_and_adding_one_customer_and_check_url(url, selectors):
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check if the transfer has been made and appears in the transfer report.")
+@allure.description("Write a code that enters the system as an administrator, and add a new account,check that you are at the appropriate url.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors):
     """
     Enter the system as a user,
@@ -236,6 +269,12 @@ def test_login_customer_deposit_1500_and_check_is_in_transactions(url, selectors
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check if there that all 3 of Harry Potter accounts have only 1 transfer.")
+@allure.description("Log in with the Harry Potter user and make sure that all 3 of his accounts have only 1 transfer")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selectors):
     """
     Log in with the Harry Potter user and make sure that all 3 of his accounts have only 1 transfer
@@ -278,6 +317,12 @@ def test_login_harry_potter_and_check_3_accounts_if_exist_one_deposit(url, selec
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Enter by administrator, and check if that you have exactly 5 customers in the system.")
+@allure.description("Enter the system as an administrator, and check that you have exactly 5 customers in the system.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_manager_and_check_exist_5_customer(url, selectors):
     """
     Enter the system as an administrator,
@@ -310,6 +355,12 @@ def test_login_manager_and_check_exist_5_customer(url, selectors):
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("System sanity test")
+@allure.description("Do a system sanity test by title.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_sanity_testing(url):
     """
     Do a system sanity test.
@@ -327,6 +378,12 @@ def test_sanity_testing(url):
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check that the system does not allow adding a new customer without a first name.")
+@allure.description("Check that the system does not allow adding a new customer without a first name.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_name(url, selectors):
     """
     Check that the system does not allow adding a new customer without a first name.
@@ -367,6 +424,11 @@ def test_login_manager_and_check_not_allow_adding_new_customer_without_a_first_n
         raise e
 
 
+@allure.title("Make 3 transfers and verify that the amounts are correct in the transfer report.")
+@allure.description("Enter the system as an assistant, make 3 transfers and verify that the amounts are correct in the transfer report.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, selectors):
     """
     Enter the system as an assistant,
@@ -409,6 +471,12 @@ def test_login_customer_deposit_3_deposits_and_check_is_in_transactions(url, sel
         capture_a_screenshot_and_save_it(driver)
         raise e
 
+
+@allure.title("Check that the money deposit field does not accept textual values.")
+@allure.description("Enter the system as a user. Check that the money deposit field does not accept textual values, only numbers.")
+@allure.label("owner", "Ibrahim Abu Wasel")
+@allure.severity(allure.severity_level.CRITICAL)
+# Allure supports next severity levels: TRIVIAL, MINOR, NORMAL, CRITICAL , BLOCKER. By default, all tests marks with NORMAL severity.
 def test_login_customer_check_deposit_input_not_accept_textual_values(url, selectors):
     """
     Enter the system as a user.
