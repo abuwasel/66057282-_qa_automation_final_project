@@ -1,4 +1,4 @@
-## Test cases for UI - using (Selenium ,Pytest & Allure reoprts)
+## Test cases for UI - using (Python, Selenium, Pytest & Allure reoprts)
 
 ```https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login```
 
