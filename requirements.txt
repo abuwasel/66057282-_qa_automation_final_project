@@ -3,3 +3,4 @@ sauceclient
 pytest
 requests
 futures
+allure-pytest
